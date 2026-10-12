@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login — Fix My Hostel</title>
+  <meta name="description" content="Student portal login for hostel complaint reporting and facility tracking.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page-body">
+
+  <header class="auth-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a href="login-selection.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <img src="assets/logo.svg" alt="Fix My Hostel Logo" width="34" height="34">
+        <div>
+          <div style="font-weight: 700; font-size: 1.05rem; color: var(--color-text-main);">Fix My Hostel</div>
+          <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Student Portal</div>
+        </div>
+      </a>
+    </div>
+    <div>
+      <a href="login-selection.html" class="btn btn-secondary btn-sm">&larr; Switch Portal</a>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <div class="auth-logo">
+          <svg viewBox="0 0 24 24" width="44" height="44" stroke="currentColor" stroke-width="2" fill="none" style="color: var(--color-primary); margin: 0 auto;">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </div>
+        <h1 class="auth-title">Student Login</h1>
+        <p class="auth-subtitle">Sign in with your Student ID or college email to access your complaints and track repair updates.</p>
+      </div>
+
+      <!-- Error feedback banner -->
+      <div id="login-error-alert" style="display: none; background-color: var(--status-emergency-bg); border: 1px solid var(--status-emergency-border); color: var(--status-emergency-text); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 1.25rem;">
+      </div>
+
+      <form id="student-login-form" novalidate>
+        <div class="form-group">
+          <label for="student-identifier" class="form-label">Student ID or College Email <span class="required-star">*</span></label>
+          <input type="text" id="student-identifier" class="form-control" placeholder="e.g., 23CS108 or aditya.v@hostel.edu" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="student-password" class="form-label">Password <span class="required-star">*</span></label>
+          <div class="password-input-wrapper">
+            <input type="password" id="student-password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" id="toggle-password-btn" aria-label="Show or hide password">
+              <svg id="eye-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; font-size: 0.8rem;">
+          <label class="checkbox-label" for="remember-me">
+            <input type="checkbox" id="remember-me" checked>
+            <span>Remember demo session</span>
+          </label>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-fill-demo-student" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;">
+            Auto-fill Demo Credentials
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.7rem;" id="btn-submit-login">
+          Sign In to Student Dashboard &rarr;
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); font-size: 0.83rem; color: var(--color-text-secondary);">
+        Don't have a resident account?
+        <a href="student-register.html" style="font-weight: 600; color: var(--color-primary); margin-left: 0.25rem;">Register Here</a>
+      </div>
+
+      <!-- Demo Account Reference Helper -->
+      <div class="demo-credentials-box">
+        <div style="font-weight: 700; margin-bottom: 0.35rem; color: var(--color-text-main);">Demo Resident Credentials:</div>
+        <div class="demo-credentials-list">
+          <div>ID: <code>23CS108</code> · Password: <code>hostel123</code> (Aditya Verma)</div>
+          <div>ID: <code>23EE054</code> · Password: <code>hostel123</code> (Sneha Nair)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('student-login-form');
+      const idInput = document.getElementById('student-identifier');
+      const passInput = document.getElementById('student-password');
+      const toggleBtn = document.getElementById('toggle-password-btn');
+      const fillBtn = document.getElementById('btn-fill-demo-student');
+      const errorAlert = document.getElementById('login-error-alert');
+
+      // Password toggle
+      if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', () => {
+          const isPass = passInput.type === 'password';
+          passInput.type = isPass ? 'text' : 'password';
+        });
+      }
+
+      // Quick autofill
+      if (fillBtn) {
+        fillBtn.addEventListener('click', () => {
+          idInput.value = '23CS108';
+          passInput.value = 'hostel123';
+          if (errorAlert) errorAlert.style.display = 'none';
+        });
+      }
+
+      // Submit
+      if (form) {
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          const identifier = idInput.value.trim();
+          const password = passInput.value;
+
+          const res = window.authManager.loginStudent(identifier, password);
+          if (res.success) {
+            window.location.href = 'student-dashboard.html';
+          } else {
+            errorAlert.textContent = res.error;
+            errorAlert.style.display = 'block';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

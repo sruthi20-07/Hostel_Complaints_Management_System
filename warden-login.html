@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warden & Admin Login — Fix My Hostel</title>
+  <meta name="description" content="Hostel administration and warden maintenance portal login.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page-body">
+
+  <header class="auth-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a href="login-selection.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <img src="assets/logo.svg" alt="Fix My Hostel Logo" width="34" height="34">
+        <div>
+          <div style="font-weight: 700; font-size: 1.05rem; color: var(--color-text-main);">Fix My Hostel</div>
+          <div style="font-size: 0.75rem; color: var(--color-accent-dark);">Warden & Administration Portal</div>
+        </div>
+      </a>
+    </div>
+    <div>
+      <a href="login-selection.html" class="btn btn-secondary btn-sm">&larr; Switch Portal</a>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <div class="auth-logo">
+          <svg viewBox="0 0 24 24" width="44" height="44" stroke="currentColor" stroke-width="2" fill="none" style="color: var(--color-accent); margin: 0 auto;">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <h1 class="auth-title">Warden / Admin Login</h1>
+        <p class="auth-subtitle">Sign in to manage hostel complaints, assign maintenance personnel, publish notices, and view failure metrics.</p>
+      </div>
+
+      <!-- Error feedback banner -->
+      <div id="warden-error-alert" style="display: none; background-color: var(--status-emergency-bg); border: 1px solid var(--status-emergency-border); color: var(--status-emergency-text); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 1.25rem;">
+      </div>
+
+      <form id="warden-login-form" novalidate>
+        <div class="form-group">
+          <label for="warden-identifier" class="form-label">Administrator Username or Email <span class="required-star">*</span></label>
+          <input type="text" id="warden-identifier" class="form-control" placeholder="e.g., warden or warden.office@hostel.edu" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="warden-password" class="form-label">Password <span class="required-star">*</span></label>
+          <div class="password-input-wrapper">
+            <input type="password" id="warden-password" class="form-control" placeholder="Enter administrative password" required autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" id="toggle-warden-password" aria-label="Show or hide password">
+              <svg id="eye-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; font-size: 0.8rem;">
+          <label class="checkbox-label" for="remember-warden">
+            <input type="checkbox" id="remember-warden" checked>
+            <span>Maintain session</span>
+          </label>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-fill-demo-warden" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;">
+            Auto-fill Warden Demo
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-accent" style="width: 100%; padding: 0.7rem;" id="btn-submit-warden-login">
+          Sign In to Warden Dashboard &rarr;
+        </button>
+      </form>
+
+      <!-- Security Notice -->
+      <div style="margin-top: 1.5rem; padding: 0.85rem; background-color: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: 0.78rem; color: var(--color-text-secondary); line-height: 1.45;">
+        <strong>Institutional Access Note:</strong> Public registration is not provided for administrative staff. Warden accounts are provisioned centrally by the college hostel management office.
+      </div>
+
+      <!-- Demo Credentials Helper -->
+      <div class="demo-credentials-box">
+        <div style="font-weight: 700; margin-bottom: 0.35rem; color: var(--color-text-main);">Demonstration Warden Account:</div>
+        <div class="demo-credentials-list">
+          <div>Username: <code>warden</code> or <code>warden.office@hostel.edu</code></div>
+          <div>Password: <code>admin123</code> (Dr. K. Ramanathan, Chief Warden)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('warden-login-form');
+      const idInput = document.getElementById('warden-identifier');
+      const passInput = document.getElementById('warden-password');
+      const toggleBtn = document.getElementById('toggle-warden-password');
+      const fillBtn = document.getElementById('btn-fill-demo-warden');
+      const errorAlert = document.getElementById('warden-error-alert');
+
+      if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', () => {
+          passInput.type = passInput.type === 'password' ? 'text' : 'password';
+        });
+      }
+
+      if (fillBtn) {
+        fillBtn.addEventListener('click', () => {
+          idInput.value = 'warden';
+          passInput.value = 'admin123';
+          if (errorAlert) errorAlert.style.display = 'none';
+        });
+      }
+
+      if (form) {
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          const identifier = idInput.value.trim();
+          const password = passInput.value;
+
+          const res = window.authManager.loginWarden(identifier, password);
+          if (res.success) {
+            window.location.href = 'warden-dashboard.html';
+          } else {
+            errorAlert.textContent = res.error;
+            errorAlert.style.display = 'block';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration — Fix My Hostel</title>
+  <meta name="description" content="Register as a hostel student resident to submit complaints and track maintenance.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page-body">
+
+  <header class="auth-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a href="login-selection.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <img src="assets/logo.svg" alt="Fix My Hostel Logo" width="34" height="34">
+        <div>
+          <div style="font-weight: 700; font-size: 1.05rem; color: var(--color-text-main);">Fix My Hostel</div>
+          <div style="font-size: 0.75rem; color: var(--color-text-secondary);">Resident Registration</div>
+        </div>
+      </a>
+    </div>
+    <div>
+      <a href="student-login.html" class="btn btn-secondary btn-sm">Already Registered? Log In</a>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card auth-card-wide">
+      <div class="auth-card-header">
+        <h1 class="auth-title">Hostel Resident Registration</h1>
+        <p class="auth-subtitle">Create a demonstration student account to report room facilities and track maintenance resolutions.</p>
+      </div>
+
+      <!-- Success feedback banner -->
+      <div id="reg-success-alert" style="display: none; background-color: var(--status-resolved-bg); border: 1px solid var(--status-resolved-border); color: var(--status-resolved-text); padding: 0.85rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 1.25rem;">
+        <strong>Registration successful!</strong> Redirecting to student login...
+      </div>
+
+      <!-- Error feedback banner -->
+      <div id="reg-error-alert" style="display: none; background-color: var(--status-emergency-bg); border: 1px solid var(--status-emergency-border); color: var(--status-emergency-text); padding: 0.85rem 1rem; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 1.25rem;">
+      </div>
+
+      <form id="student-register-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-name" class="form-label">Full Name <span class="required-star">*</span></label>
+            <input type="text" id="reg-name" class="form-control" placeholder="e.g., Rajesh Kumar" required>
+            <div class="invalid-feedback" id="err-name"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-id" class="form-label">Student ID / Roll No <span class="required-star">*</span></label>
+            <input type="text" id="reg-id" class="form-control" placeholder="e.g., 24CS088" required>
+            <div class="invalid-feedback" id="err-studentId"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email" class="form-label">College Email Address <span class="required-star">*</span></label>
+          <input type="email" id="reg-email" class="form-control" placeholder="e.g., rajesh.k@hostel.edu" required>
+          <div class="invalid-feedback" id="err-email"></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-block" class="form-label">Hostel Block <span class="required-star">*</span></label>
+            <select id="reg-block" class="form-control" required>
+              <option value="">Select Block...</option>
+              <option value="Block A">Block A (Senior Boys)</option>
+              <option value="Block B">Block B (Junior Boys)</option>
+              <option value="Block C">Block C (Girls Block 1)</option>
+              <option value="Block D">Block D (Girls Block 2)</option>
+              <option value="PG Block">PG Block</option>
+            </select>
+            <div class="invalid-feedback" id="err-block"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-room" class="form-label">Room Number <span class="required-star">*</span></label>
+            <input type="text" id="reg-room" class="form-control" placeholder="e.g., B-205" required>
+            <div class="invalid-feedback" id="err-room"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-password" class="form-label">Password <span class="required-star">*</span></label>
+            <input type="password" id="reg-password" class="form-control" placeholder="Min. 6 characters" required>
+            <div class="invalid-feedback" id="err-password"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-confirm-password" class="form-label">Confirm Password <span class="required-star">*</span></label>
+            <input type="password" id="reg-confirm-password" class="form-control" placeholder="Re-enter password" required>
+            <div class="invalid-feedback" id="err-confirmPassword"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label" for="reg-agree-terms">
+            <input type="checkbox" id="reg-agree-terms" required>
+            <span>I understand this is a browser-local prototype demonstration for college mini-project evaluation.</span>
+          </label>
+          <div class="invalid-feedback" id="err-agreeTerms"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; margin-top: 0.5rem;" id="btn-submit-register">
+          Create Account & Proceed to Login &rarr;
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.83rem; color: var(--color-text-secondary);">
+        Already have an account?
+        <a href="student-login.html" style="font-weight: 600; color: var(--color-primary); margin-left: 0.25rem;">Sign In</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('student-register-form');
+      const errorAlert = document.getElementById('reg-error-alert');
+      const successAlert = document.getElementById('reg-success-alert');
+
+      const clearErrors = () => {
+        ['name', 'studentId', 'email', 'block', 'room', 'password', 'confirmPassword', 'agreeTerms'].forEach(f => {
+          const errEl = document.getElementById(`err-${f}`);
+          if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+          const inputEl = document.getElementById(`reg-${f.toLowerCase()}`);
+          if (inputEl) inputEl.classList.remove('is-invalid');
+        });
+        if (errorAlert) errorAlert.style.display = 'none';
+      };
+
+      if (form) {
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          clearErrors();
+
+          const data = {
+            name: document.getElementById('reg-name').value.trim(),
+            studentId: document.getElementById('reg-id').value.trim(),
+            email: document.getElementById('reg-email').value.trim(),
+            block: document.getElementById('reg-block').value,
+            room: document.getElementById('reg-room').value.trim(),
+            password: document.getElementById('reg-password').value,
+            confirmPassword: document.getElementById('reg-confirm-password').value,
+            agreeTerms: document.getElementById('reg-agree-terms').checked
+          };
+
+          const res = window.authManager.registerStudent(data);
+          if (res.success) {
+            successAlert.style.display = 'block';
+            setTimeout(() => {
+              window.location.href = 'student-login.html';
+            }, 1200);
+          } else {
+            // Display inline errors
+            let firstMsg = '';
+            Object.entries(res.errors).forEach(([field, msg]) => {
+              if (!firstMsg) firstMsg = msg;
+              const errEl = document.getElementById(`err-${field}`);
+              if (errEl) {
+                errEl.textContent = msg;
+                errEl.style.display = 'block';
+              }
+              const input = document.getElementById(`reg-${field.toLowerCase()}`);
+              if (input) input.classList.add('is-invalid');
+            });
+            if (errorAlert && firstMsg) {
+              errorAlert.textContent = firstMsg;
+              errorAlert.style.display = 'block';
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

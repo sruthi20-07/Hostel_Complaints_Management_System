@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard — Fix My Hostel</title>
+  <meta name="description" content="Student overview of personal hostel complaints and resolution progress.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app-container">
+
+  <!-- STUDENT SIDEBAR -->
+  <aside class="app-sidebar" id="app-sidebar" aria-label="Student Navigation">
+    <div class="sidebar-header">
+      <img src="assets/logo.svg" alt="Fix My Hostel Logo" class="brand-logo" width="34" height="34">
+      <div class="brand-text">
+        <span class="brand-title">Fix My Hostel</span>
+        <span class="brand-subtitle">Student Portal</span>
+      </div>
+    </div>
+
+    <!-- Active Demo Role Tag -->
+    <div class="sidebar-role-indicator">
+      <div class="role-tag-container">
+        <span class="role-tag student">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Student
+        </span>
+      </div>
+      <span style="font-size: 0.72rem; color: var(--color-text-secondary);" id="sidebar-room-tag">Room Resident</span>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Navigation</div>
+      <ul class="nav-list">
+        <li>
+          <a href="student-dashboard.html" class="nav-item-btn active">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="complaints.html?action=new" class="nav-item-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            <span>Report an Issue</span>
+          </a>
+        </li>
+        <li>
+          <a href="complaints.html" class="nav-item-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+            <span>My Complaints</span>
+            <span class="nav-badge" id="nav-badge-my-count">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="community.html" class="nav-item-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Community Issues</span>
+          </a>
+        </li>
+        <li>
+          <a href="notices.html" class="nav-item-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+            <span>Notices & Schedule</span>
+          </a>
+        </li>
+        <li>
+          <a href="emergency-contacts.html" class="nav-item-btn">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>Emergency Contacts</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar User Footer -->
+    <div class="sidebar-footer">
+      <div class="user-quick-profile">
+        <div class="user-avatar" id="sidebar-user-avatar">S</div>
+        <div class="user-meta">
+          <div class="user-meta-name" id="sidebar-user-name">Aditya Verma</div>
+          <div class="user-meta-detail" id="sidebar-user-detail">Block B · Room B-214</div>
+        </div>
+      </div>
+      <button class="logout-btn" style="width: 100%; margin-top: 0.65rem; justify-content: center;" onclick="window.authManager.logout()">
+        <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Logout Session</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <main class="app-main">
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle-btn" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+        <div class="page-breadcrumb">
+          <span>Student Portal</span>
+          <span>/</span>
+          <span class="current">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div id="nav-user-controls" class="nav-user-controls"></div>
+        <a href="complaints.html?action=new" class="quick-report-btn">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Report Issue
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+
+      <!-- 1. Heading & Personalized Welcome -->
+      <div class="page-header">
+        <div class="page-header-text">
+          <h1>Hostel Maintenance Overview</h1>
+          <p id="student-welcome-msg">Welcome back. Track your submitted maintenance requests and stay informed on hostel facility repairs.</p>
+        </div>
+        <!-- 3. Prominent Report New Issue Action -->
+        <div class="page-header-actions">
+          <a href="complaints.html?action=new" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Report New Issue
+          </a>
+        </div>
+      </div>
+
+      <!-- 5. Compact Urgent-Complaint Alert (shown ONLY when relevant) -->
+      <div class="emergency-callout" id="student-urgent-alert" style="display: none;">
+        <div class="emergency-callout-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="emergency-callout-text">
+          <h4>Urgent Safety Attention Required</h4>
+          <p id="student-urgent-text">You have an open high/emergency priority complaint being processed.</p>
+          <div class="emergency-helplines">
+            <span>Warden Desk: +91 94441 55678</span>
+            <span>Security Gate: +91 94441 22334</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Four Compact Statistic Cards (calculated for logged-in student) -->
+      <div class="stats-grid" style="margin-bottom: 1.75rem;">
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-label">Total Reported</span>
+            <div class="stat-card-icon">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+            </div>
+          </div>
+          <div class="stat-card-value" id="stat-total-reported">0</div>
+          <div class="stat-card-subtext">All your submitted tickets</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-label">Open Issues</span>
+            <div class="stat-card-icon">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+          <div class="stat-card-value" id="stat-open-issues">0</div>
+          <div class="stat-card-subtext">Pending or acknowledged</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-label">In Progress</span>
+            <div class="stat-card-icon inprogress">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+          </div>
+          <div class="stat-card-value" id="stat-in-progress">0</div>
+          <div class="stat-card-subtext">Staff actively repairing</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-label">Resolved</span>
+            <div class="stat-card-icon resolved">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+          <div class="stat-card-value" id="stat-resolved">0</div>
+          <div class="stat-card-subtext">Fixed and completed</div>
+        </div>
+      </div>
+
+      <!-- 6. Short Recent Complaints List (At most 3-5 records of this student) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <h2 class="card-title">Recent Complaints</h2>
+            <span class="card-subtitle">Your most recently reported issues</span>
+          </div>
+          <!-- 7. View All Complaints Link -->
+          <a href="complaints.html" class="btn btn-secondary btn-sm" style="font-weight: 600;">
+            View All Complaints &rarr;
+          </a>
+        </div>
+        <div class="card-body">
+          <div id="student-recent-list">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Scripts -->
+<script src="js/storage.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Guard route: requires student role
+    if (!window.authManager.requireAuth('student')) return;
+
+    const user = window.authManager.getCurrentUser();
+    if (!user) return;
+
+    // 2. Personalize welcome
+    const welcomeMsg = document.getElementById('student-welcome-msg');
+    if (welcomeMsg) {
+      welcomeMsg.textContent = `Welcome back, ${user.name}. You are registered in ${user.block}, Room ${user.room}. Here is your maintenance summary:`;
+    }
+
+    // Sidebar user metadata
+    const nameEl = document.getElementById('sidebar-user-name');
+    const detailEl = document.getElementById('sidebar-user-detail');
+    const avatarEl = document.getElementById('sidebar-user-avatar');
+    const roomTag = document.getElementById('sidebar-room-tag');
+    if (nameEl) nameEl.textContent = user.name;
+    if (detailEl) detailEl.textContent = `${user.block} · Room ${user.room}`;
+    if (avatarEl) avatarEl.textContent = user.name.charAt(0);
+    if (roomTag) roomTag.textContent = user.room;
+
+    window.authManager.renderNavUserControls();
+
+    // 3. Calculate statistics strictly for this student
+    const studentStats = window.storageManager.getStatistics(user.id);
+
+    document.getElementById('stat-total-reported').textContent = studentStats.total;
+    document.getElementById('stat-open-issues').textContent = studentStats.open;
+    document.getElementById('stat-in-progress').textContent = studentStats.inProgress;
+    document.getElementById('stat-resolved').textContent = studentStats.resolved;
+
+    const navBadge = document.getElementById('nav-badge-my-count');
+    if (navBadge) navBadge.textContent = studentStats.total;
+
+    // 4. Urgent alert: shown ONLY when student has urgent/emergency open issues
+    const urgentAlert = document.getElementById('student-urgent-alert');
+    const urgentText = document.getElementById('student-urgent-text');
+    if (studentStats.urgentOpen > 0) {
+      urgentAlert.style.display = 'flex';
+      urgentText.textContent = `You have ${studentStats.urgentOpen} open urgent ticket(s) under review by hostel maintenance.`;
+    } else {
+      urgentAlert.style.display = 'none';
+    }
+
+    // 5. Short Recent Complaints list (3 to 5 records belonging to this student)
+    const recentListContainer = document.getElementById('student-recent-list');
+    const recentComplaints = window.storageManager.getRecentComplaints(4, user.id);
+
+    if (recentComplaints.length === 0) {
+      recentListContainer.innerHTML = `
+        <div class="empty-state" style="padding: 2rem 1rem;">
+          <div class="empty-state-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+          </div>
+          <div class="empty-state-title">No Complaints Reported Yet</div>
+          <div class="empty-state-desc">You have not submitted any facility complaints for Room ${Validator.escapeHtml(user.room)}.</div>
+          <a href="complaints.html?action=new" class="btn btn-primary btn-sm">+ Report First Issue</a>
+        </div>
+      `;
+    } else {
+      recentListContainer.innerHTML = `
+        <div class="complaints-list">
+          ${recentComplaints.map(c => {
+            const statusKey = c.status.toLowerCase().replace(/\s+/g, '');
+            const priorityKey = c.priority.toLowerCase();
+            const dateStr = new Date(c.createdAt).toLocaleDateString(undefined, {
+              month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            const statusIcon = window.app ? window.app.getStatusIcon(c.status) : '';
+            const categoryIcon = window.app ? window.app.getCategoryIcon(c.category) : '';
+
+            return `
+              <div class="complaint-item-card" onclick="window.location.href='complaint-details.html?id=${c.id}'">
+                <div class="complaint-card-top">
+                  <div class="complaint-id-time">
+                    <span class="complaint-id-tag">${c.id}</span>
+                    <span>Submitted ${dateStr}</span>
+                  </div>
+                  <div class="complaint-card-badges">
+                    <span class="badge badge-priority-${priorityKey}">${c.priority}</span>
+                    <span class="badge badge-status-${statusKey}">${statusIcon} ${c.status}</span>
+                  </div>
+                </div>
+                <div class="complaint-card-title">${Validator.escapeHtml(c.title)}</div>
+                <div class="complaint-card-desc">${Validator.escapeHtml(c.description)}</div>
+                <div class="complaint-card-bottom">
+                  <div style="display: flex; gap: 0.6rem; align-items: center;">
+                    <span class="category-pill">${categoryIcon} ${Validator.escapeHtml(c.category)}</span>
+                    <span class="complaint-location-tag">${Validator.escapeHtml(c.block)} · ${Validator.escapeHtml(c.room)}</span>
+                  </div>
+                  <a href="complaint-details.html?id=${c.id}" style="font-weight: 600; font-size: 0.8rem;">View Timeline &rarr;</a>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // Mobile menu toggle
+    const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const sidebar = document.getElementById('app-sidebar');
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('mobile-open');
+      });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fix My Hostel — Hostel Complaint & Maintenance Management System</title>
+  <meta name="description" content="Centralized hostel complaint and maintenance tracking system for students and wardens. Submit, prioritize, track, and resolve hostel facility issues.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app-container">
+
+  <!-- ========================================================================
+       SIDEBAR NAVIGATION
+       ======================================================================== -->
+  <aside class="app-sidebar" id="app-sidebar" aria-label="Main Navigation">
+    <div class="sidebar-header">
+      <img src="assets/logo.svg" alt="Fix My Hostel Logo" class="brand-logo" width="34" height="34">
+      <div class="brand-text">
+        <span class="brand-title">Fix My Hostel</span>
+        <span class="brand-subtitle">Hostel Facility System</span>
+      </div>
+    </div>
+
+    <!-- Active Demo Role Tag in Sidebar -->
+    <div class="sidebar-role-indicator" id="sidebar-role-indicator">
+      <div class="role-tag-container">
+        <span class="role-tag student">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+          Student
+        </span>
+      </div>
+      <span style="font-size: 0.72rem; color: var(--color-text-secondary);">Hosteller</span>
+    </div>
+
+    <!-- Navigation Links Container -->
+    <nav class="sidebar-nav">
+      <!-- STUDENT NAVIGATION -->
+      <div id="student-nav-group">
+        <div class="nav-section-title">Student Portal</div>
+        <ul class="nav-list">
+          <li>
+            <button class="nav-item-btn active" data-view-target="student-dashboard" id="nav-btn-student-dashboard">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              <span>Dashboard</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="report-issue" id="nav-btn-report-issue">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              <span>Report an Issue</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="my-complaints" id="nav-btn-my-complaints">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+              <span>My Complaints</span>
+              <span class="nav-badge" id="nav-badge-my-complaints">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="community-issues" id="nav-btn-community-issues">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>Community Issues</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="notices-maintenance" id="nav-btn-notices-maintenance">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+              <span>Notices & Schedule</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="profile-preferences" id="nav-btn-profile-preferences">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Profile / Info</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- WARDEN NAVIGATION -->
+      <div id="warden-nav-group" style="display: none;">
+        <div class="nav-section-title">Warden Management</div>
+        <ul class="nav-list">
+          <li>
+            <button class="nav-item-btn" data-view-target="warden-overview" id="nav-btn-warden-overview">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Overview</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="all-complaints" id="nav-btn-all-complaints">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg>
+              <span>All Complaints</span>
+              <span class="nav-badge" id="nav-badge-warden-all">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="warden-maintenance" id="nav-btn-warden-maintenance">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              <span>Maintenance Work</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="warden-notices" id="nav-btn-warden-notices">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+              <span>Manage Notices</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="warden-analytics" id="nav-btn-warden-analytics">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+              <span>Analytics & CSV</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-view-target="warden-settings" id="nav-btn-warden-settings">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>Demo Settings</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar Profile / Info Snippet -->
+    <div class="sidebar-footer">
+      <div class="user-quick-profile" id="sidebar-user-snippet">
+        <div class="user-avatar">S</div>
+        <div class="user-meta">
+          <div class="user-meta-name">Aditya Verma</div>
+          <div class="user-meta-detail">Block B · Room B-214</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       MAIN APP CONTAINER (Topbar + Views)
+       ======================================================================== -->
+  <main class="app-main" id="app-main">
+
+    <!-- Topbar Header -->
+    <header class="app-topbar" aria-label="Application Header">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle-btn" aria-label="Toggle navigation drawer">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+        <div class="page-breadcrumb">
+          <span>Hostel Maintenance</span>
+          <span>/</span>
+          <span class="current" id="breadcrumb-current-page">Student Dashboard</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Demo Role Switcher -->
+        <div class="role-switch-wrapper" role="radiogroup" aria-label="Demo Role Selector">
+          <button class="role-switch-btn active student-btn" id="role-btn-student" role="radio" aria-checked="true">
+            <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Student View
+          </button>
+          <button class="role-switch-btn warden-btn" id="role-btn-warden" role="radio" aria-checked="false">
+            <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Warden View
+          </button>
+        </div>
+
+        <!-- Quick Report Action Button -->
+        <button class="quick-report-btn" id="btn-quick-report">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Report Issue
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Dynamic View Area -->
+    <div class="page-content-wrapper">
+
+      <!-- ====================================================================
+           VIEW 1: STUDENT DASHBOARD
+           ==================================================================== -->
+      <section class="view-section active" id="view-student-dashboard">
+        <!-- Prototype Notice Banner -->
+        <div class="demo-banner">
+          <div class="demo-banner-content">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span><strong>College Mini-Project Demonstration:</strong> This is a browser-local prototype using persistent localStorage. Both Student and Warden roles operate on the same live dataset.</span>
+          </div>
+        </div>
+
+        <!-- Overdue / Urgent Alert Callout (Dynamic) -->
+        <div class="emergency-callout" id="dash-urgent-banner" style="display: none;">
+          <div class="emergency-callout-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="emergency-callout-text">
+            <h4>Attention Required: Urgent Open Complaints</h4>
+            <p id="dash-urgent-text">There are urgent facility issues requiring maintenance attention.</p>
+            <div class="emergency-helplines">
+              <span>Warden Office: +91 94441 55678</span>
+              <span>Campus Security Desk: +91 94441 22334</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Hostel Maintenance Overview</h1>
+            <p>Welcome back, Aditya. Track your submitted maintenance requests and stay informed on hostel facility repairs.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="window.app.navigateTo('report-issue')">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Report New Issue
+            </button>
+          </div>
+        </div>
+
+        <!-- Stat Metrics Cards (Recalculated dynamically) -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Total Reported</span>
+              <div class="stat-card-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="dash-stat-total">0</div>
+            <div class="stat-card-subtext">All time recorded complaints</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Open Issues</span>
+              <div class="stat-card-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="dash-stat-open">0</div>
+            <div class="stat-card-subtext">Awaiting or in active repair</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">In Progress</span>
+              <div class="stat-card-icon inprogress">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="dash-stat-inprogress">0</div>
+            <div class="stat-card-subtext">Assigned to maintenance staff</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Resolved</span>
+              <div class="stat-card-icon resolved">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="dash-stat-resolved">0</div>
+            <div class="stat-card-subtext">Successfully completed & closed</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Urgent / Emergency</span>
+              <div class="stat-card-icon urgent">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="dash-stat-urgent">0</div>
+            <div class="stat-card-subtext">High priority open cases</div>
+          </div>
+        </div>
+
+        <!-- Dashboard Two-Column Layout -->
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 1.5rem; margin-top: 1rem;">
+          <!-- Left Column: Recent Complaints -->
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 class="card-title">Recent Facility Complaints</h2>
+                  <span class="card-subtitle">Latest reports logged in the hostel system</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="window.app.navigateTo('my-complaints')">View All &rarr;</button>
+              </div>
+              <div class="card-body">
+                <div class="complaints-list" id="dash-recent-complaints-list">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Relevant Notices & Upcoming Maintenance -->
+          <div>
+            <!-- Active Hostel Notices Preview -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 class="card-title">Hostel Announcements</h2>
+                  <span class="card-subtitle">Active official notices from warden office</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="window.app.navigateTo('notices-maintenance')">View All</button>
+              </div>
+              <div class="card-body">
+                <div id="dash-notices-preview">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Urgent Safety Info Box -->
+            <div class="card" style="border-left: 3px solid var(--color-primary);">
+              <div class="card-body">
+                <h3 style="font-size: 0.92rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 0.35rem;">
+                  Emergency Facility Contacts
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 0.65rem;">
+                  For immediate safety hazards such as gas leakage, major electrical sparking, or water pipe bursting:
+                </p>
+                <div style="font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.35rem; font-weight: 500;">
+                  <div>Hostel Warden: <strong>+91 94441 55678</strong></div>
+                  <div>Campus Security Gate: <strong>+91 94441 22334</strong></div>
+                  <div>Electrician on Duty: <strong>+91 98401 77665</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 2: REPORT AN ISSUE FORM
+           ==================================================================== -->
+      <section class="view-section" id="view-report-issue">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Report a Hostel Facility Issue</h1>
+            <p>Submit a maintenance ticket for repairs in your room or hostel common areas.</p>
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 820px; margin: 0 auto;">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2 class="card-title">Complaint Submission Form</h2>
+              <span class="card-subtitle">Please provide clear details to help the maintenance team locate and resolve the issue</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Duplicate Complaint Warning Banner (Dynamic) -->
+            <div class="duplicate-warning-banner" id="duplicate-warning-banner">
+              <div class="duplicate-warning-title">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+                Similar Issue Already Reported
+              </div>
+              <div class="duplicate-warning-body">
+                A similar open complaint was recently submitted for this location:
+                <div id="duplicate-existing-ref" style="margin: 0.4rem 0; padding: 0.45rem; background: #FFFDF8; border-radius: var(--radius-sm); border: 1px solid var(--color-border);"></div>
+                You can view the existing complaint or proceed with your submission if your problem is separate.
+              </div>
+              <div class="duplicate-warning-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-duplicate-view">View Existing Issue</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-duplicate-proceed">Submit Anyway</button>
+              </div>
+            </div>
+
+            <!-- Emergency Priority Callout Warning -->
+            <div class="emergency-callout" id="form-emergency-warning" style="display: none;">
+              <div class="emergency-callout-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+              </div>
+              <div class="emergency-callout-text">
+                <h4>Emergency Priority Notice</h4>
+                <p>For immediate hazards (sparking, water flood, physical safety), also call the warden desk at <strong>+91 94441 55678</strong> immediately. This web ticket records the incident for the repair log.</p>
+              </div>
+            </div>
+
+            <form id="complaint-form" novalidate>
+              <!-- Title -->
+              <div class="form-group">
+                <label for="complaint-title" class="form-label">
+                  Issue Title <span class="required-star">*</span>
+                  <span class="char-count" id="title-char-count">0 / 120</span>
+                </label>
+                <input type="text" id="complaint-title" class="form-control" placeholder="e.g., Leaking water tap in washroom, Wi-Fi router no signal" maxlength="120" required>
+                <div class="invalid-feedback" id="error-title"></div>
+                <div class="form-hint">Briefly state the specific problem (5 to 120 characters).</div>
+              </div>
+
+              <!-- Category & Priority Row -->
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="complaint-category" class="form-label">Category <span class="required-star">*</span></label>
+                  <select id="complaint-category" class="form-control" required>
+                    <option value="">Select a category...</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Cleaning">Cleaning & Hygiene</option>
+                    <option value="Wi-Fi">Wi-Fi & Internet</option>
+                    <option value="Furniture">Furniture & Carpentry</option>
+                    <option value="Security">Security & Locks</option>
+                    <option value="Water Supply">Water Supply & RO Cooler</option>
+                    <option value="Other">Other Maintenance</option>
+                  </select>
+                  <div class="invalid-feedback" id="error-category"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="complaint-priority" class="form-label">Priority Level <span class="required-star">*</span></label>
+                  <select id="complaint-priority" class="form-control" required>
+                    <option value="Low">Low (General convenience, cosmetic)</option>
+                    <option value="Medium" selected>Medium (Standard repair, 24-48 hrs)</option>
+                    <option value="High">High (Impacting daily study/living)</option>
+                    <option value="Emergency">Emergency (Safety hazard, immediate risk)</option>
+                  </select>
+                  <div class="invalid-feedback" id="error-priority"></div>
+                </div>
+              </div>
+
+              <!-- Location Row (Block, Floor, Room) -->
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="complaint-block" class="form-label">Hostel Block <span class="required-star">*</span></label>
+                  <select id="complaint-block" class="form-control" required>
+                    <option value="">Select Block...</option>
+                    <option value="Block A">Block A (Senior Boys)</option>
+                    <option value="Block B" selected>Block B (Junior Boys)</option>
+                    <option value="Block C">Block C (Girls Block 1)</option>
+                    <option value="Block D">Block D (Girls Block 2)</option>
+                    <option value="PG Block">PG & Research Block</option>
+                    <option value="Mess Block">Hostel Dining & Mess Block</option>
+                  </select>
+                  <div class="invalid-feedback" id="error-block"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="complaint-floor" class="form-label">Floor <span class="required-star">*</span></label>
+                  <select id="complaint-floor" class="form-control" required>
+                    <option value="">Select Floor...</option>
+                    <option value="Ground Floor">Ground Floor</option>
+                    <option value="1st Floor">1st Floor</option>
+                    <option value="2nd Floor" selected>2nd Floor</option>
+                    <option value="3rd Floor">3rd Floor</option>
+                    <option value="4th Floor">4th Floor</option>
+                  </select>
+                  <div class="invalid-feedback" id="error-floor"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="complaint-room" class="form-label">
+                    Room / Specific Area <span class="required-star" id="room-required-star">*</span>
+                  </label>
+                  <input type="text" id="complaint-room" class="form-control" placeholder="e.g., B-214" maxlength="40">
+                  <div class="invalid-feedback" id="error-room"></div>
+                </div>
+              </div>
+
+              <!-- Common Area Checkbox -->
+              <div class="form-group">
+                <label class="checkbox-label" for="complaint-common-area">
+                  <input type="checkbox" id="complaint-common-area">
+                  <span>This is a common-area issue (corridor, common washroom, water cooler, study hall)</span>
+                </label>
+              </div>
+
+              <!-- Detailed Description -->
+              <div class="form-group">
+                <label for="complaint-desc" class="form-label">
+                  Detailed Description <span class="required-star">*</span>
+                  <span class="char-count" id="desc-char-count">0 / 1000</span>
+                </label>
+                <textarea id="complaint-desc" class="form-control" rows="4" placeholder="Describe the symptom, exact location, when it started, and any steps already taken..." maxlength="1000" required></textarea>
+                <div class="invalid-feedback" id="error-description"></div>
+                <div class="form-hint">Minimum 15 characters. Be as specific as possible.</div>
+              </div>
+
+              <!-- Image Attachment (Optional) -->
+              <div class="form-group">
+                <label class="form-label">Optional Photo Attachment</label>
+                <div class="image-upload-wrapper" onclick="document.getElementById('complaint-image').click()">
+                  <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1.8" fill="none" style="color: var(--color-primary); margin-bottom: 0.5rem;"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  <div style="font-size: 0.85rem; font-weight: 600;">Click to select an image from your device</div>
+                  <div style="font-size: 0.75rem; color: var(--color-text-muted);">Supports JPG, PNG, WebP (Max 3MB). Stored locally in session memory.</div>
+                  <input type="file" id="complaint-image" accept="image/jpeg,image/png,image/webp" style="display: none;">
+                </div>
+
+                <!-- Preview container -->
+                <div class="image-preview-container" id="image-preview-box" style="display: none;">
+                  <img id="image-preview-thumb" class="preview-thumb" src="" alt="Selected photo thumbnail">
+                  <div class="preview-meta">
+                    <div id="image-preview-name" style="font-weight: 600;">image.jpg</div>
+                    <div style="color: var(--color-primary); font-size: 0.75rem;">Photo ready to attach</div>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-remove-image">Remove</button>
+                </div>
+              </div>
+
+              <!-- Form Action Buttons -->
+              <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                <button type="button" class="btn btn-secondary" id="btn-reset-form">Reset Form</button>
+                <button type="submit" class="btn btn-primary" id="btn-submit-complaint">
+                  Review & Submit Complaint &rarr;
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 3: MY COMPLAINTS (Listing & Multi-Filter)
+           ==================================================================== -->
+      <section class="view-section" id="view-my-complaints">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>My Complaints & Facility Tracking</h1>
+            <p>Filter, search, track the status of reported issues, or reopen resolved tickets if problems persist.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="window.app.navigateTo('report-issue')">
+              + New Complaint
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-bar-main">
+            <!-- Search input -->
+            <div class="search-box-wrapper">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="search-input" id="search-complaints-input" placeholder="Search by ID (FMH-...), title, room...">
+              <button class="search-clear-btn" id="btn-clear-search" aria-label="Clear search input">&times;</button>
+            </div>
+
+            <!-- Filter Dropdowns Row -->
+            <div class="filter-selects-row">
+              <select class="filter-select" id="filter-status-select" aria-label="Filter by Status">
+                <option value="ALL">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Acknowledged">Acknowledged</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Reopened">Reopened</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+
+              <select class="filter-select" id="filter-category-select" aria-label="Filter by Category">
+                <option value="ALL">All Categories</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electricity">Electricity</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Wi-Fi">Wi-Fi</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Security">Security</option>
+                <option value="Water Supply">Water Supply</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <select class="filter-select" id="filter-priority-select" aria-label="Filter by Priority">
+                <option value="ALL">All Priorities</option>
+                <option value="Emergency">Emergency</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+
+              <select class="filter-select" id="filter-block-select" aria-label="Filter by Block">
+                <option value="ALL">All Blocks</option>
+                <option value="Block A">Block A</option>
+                <option value="Block B">Block B</option>
+                <option value="Block C">Block C</option>
+                <option value="Block D">Block D</option>
+                <option value="PG Block">PG Block</option>
+                <option value="Mess Block">Mess Block</option>
+              </select>
+
+              <select class="filter-select" id="sort-complaints-select" aria-label="Sort Complaints">
+                <option value="newest">Sort: Newest First</option>
+                <option value="oldest">Sort: Oldest First</option>
+                <option value="priority">Sort: Highest Priority</option>
+              </select>
+
+              <button class="btn btn-secondary btn-sm" id="btn-clear-all-filters">Clear All</button>
+            </div>
+          </div>
+
+          <div class="filter-chips-row">
+            <span style="font-weight: 600; color: var(--color-text-secondary);">Showing:</span>
+            <span id="my-complaints-count" style="font-weight: 700; color: var(--color-text-main);">0 complaints</span>
+          </div>
+        </div>
+
+        <!-- Complaints List Cards Container -->
+        <div class="complaints-list" id="my-complaints-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 4: COMMUNITY ISSUES BOARD
+           ==================================================================== -->
+      <section class="view-section" id="view-community-issues">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Community Issues Board</h1>
+            <p>Shared hostel problems in common areas. Upvote recurring issues so the warden can prioritize shared facilities.</p>
+          </div>
+        </div>
+
+        <div class="demo-banner">
+          <div class="demo-banner-content">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span><strong>Community Visibility:</strong> Sensitive personal descriptions and student contact details are hidden on this board. Upvotes are stored locally in your browser.</span>
+          </div>
+        </div>
+
+        <div class="community-grid" id="community-issues-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 5: NOTICES & MAINTENANCE (Student View)
+           ==================================================================== -->
+      <section class="view-section" id="view-notices-maintenance">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Notices & Scheduled Maintenance</h1>
+            <p>Official warden office notices, scheduled water tank cleanings, electrical shutdowns, and pest control.</p>
+          </div>
+        </div>
+
+        <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">Official Announcements</h2>
+        <div class="notices-grid" id="student-notices-grid" style="margin-bottom: 2rem;">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">Planned Maintenance Schedule</h2>
+        <div class="notices-grid" id="maintenance-schedule-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 6: PROFILE / PREFERENCES
+           ==================================================================== -->
+      <section class="view-section" id="view-profile-preferences">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Student Profile & Information</h1>
+            <p>Configure demonstration student details used when submitting facility complaints.</p>
+          </div>
+        </div>
+
+        <div class="profile-card-grid">
+          <div class="profile-sidebar-card">
+            <div class="profile-avatar-large">S</div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.2rem;">Aditya Verma</h3>
+            <div style="font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Roll: 23CS108 · Computer Science</div>
+
+            <table class="profile-details-table">
+              <tr>
+                <td>Hostel Block</td>
+                <td>Block B</td>
+              </tr>
+              <tr>
+                <td>Floor</td>
+                <td>2nd Floor</td>
+              </tr>
+              <tr>
+                <td>Room</td>
+                <td>B-214</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td><span class="badge" style="background: var(--color-primary-light); color: var(--color-primary-dark);">Resident</span></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Edit Demo Resident Details</h2>
+            </div>
+            <div class="card-body">
+              <form id="profile-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="profile-name" class="form-label">Full Name</label>
+                    <input type="text" id="profile-name" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="profile-student-id" class="form-label">Roll / Student ID</label>
+                    <input type="text" id="profile-student-id" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="profile-block" class="form-label">Hostel Block</label>
+                    <select id="profile-block" class="form-control">
+                      <option value="Block A">Block A</option>
+                      <option value="Block B">Block B</option>
+                      <option value="Block C">Block C</option>
+                      <option value="Block D">Block D</option>
+                      <option value="PG Block">PG Block</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="profile-room" class="form-label">Room Number</label>
+                    <input type="text" id="profile-room" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="profile-email" class="form-label">Hostel Email</label>
+                    <input type="email" id="profile-email" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="profile-phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="profile-phone" class="form-control" required>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Save Profile Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 7: WARDEN DASHBOARD OVERVIEW
+           ==================================================================== -->
+      <section class="view-section" id="view-warden-overview">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Warden Management Dashboard</h1>
+            <p>Facility operations overview, urgent complaints triage, staff allocation, and maintenance progress.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary" onclick="window.adminController.openCreateNoticeModal()">+ New Notice</button>
+            <button class="btn btn-primary" onclick="window.app.navigateTo('all-complaints')">View All Complaints &rarr;</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Total Complaints</span>
+              <div class="stat-card-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="warden-stat-total">0</div>
+            <div class="stat-card-subtext">Registered in portal</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Active / Open</span>
+              <div class="stat-card-icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="warden-stat-open">0</div>
+            <div class="stat-card-subtext">Needs action or in progress</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Urgent Priority</span>
+              <div class="stat-card-icon urgent">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="warden-stat-urgent">0</div>
+            <div class="stat-card-subtext">Emergency or high impact</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Overdue Cases</span>
+              <div class="stat-card-icon" style="background-color: var(--status-overdue-bg); color: var(--status-overdue-text);">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 10"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="warden-stat-overdue">0</div>
+            <div class="stat-card-subtext">> 48 hours unresolved</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Avg. Resolution</span>
+              <div class="stat-card-icon resolved">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="warden-stat-avg">N/A</div>
+            <div class="stat-card-subtext">Real average turnaround time</div>
+          </div>
+        </div>
+
+        <!-- Quick Access Navigation Panels -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Quick Action: Complaints Triage</h2>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 1rem;">
+                Review incoming submitted complaints, verify location, acknowledge tickets, and assign electricians, plumbers, or carpenters.
+              </p>
+              <button class="btn btn-primary" onclick="window.app.navigateTo('all-complaints')">
+                Open All Complaints Table &rarr;
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Data Reporting & Analytics</h2>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 1rem;">
+                Inspect facility failure trends by block and category. Export sanitized CSV complaint log for administrative records.
+              </p>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="window.app.navigateTo('warden-analytics')">View Charts</button>
+                <button class="btn btn-primary" onclick="window.storageManager.exportComplaintsToCSV()">Export CSV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 8: ALL COMPLAINTS TABLE (Warden View)
+           ==================================================================== -->
+      <section class="view-section" id="view-all-complaints">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Hostel Complaints Management</h1>
+            <p>Filter, prioritize, assign technicians, log updates, record resolution notes, and mark duplicate reports.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary" id="btn-export-csv">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Warden Filter Toolbar -->
+        <div class="filter-bar">
+          <div class="filter-bar-main">
+            <div class="search-box-wrapper">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="search-input" id="admin-search-input" placeholder="Search ID, title, student, room...">
+            </div>
+
+            <div class="filter-selects-row">
+              <select class="filter-select" id="admin-status-filter" aria-label="Warden status filter">
+                <option value="ALL">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Acknowledged">Acknowledged</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Reopened">Reopened</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+
+              <select class="filter-select" id="admin-category-filter" aria-label="Warden category filter">
+                <option value="ALL">All Categories</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electricity">Electricity</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Wi-Fi">Wi-Fi</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Security">Security</option>
+                <option value="Water Supply">Water Supply</option>
+              </select>
+
+              <select class="filter-select" id="admin-priority-filter" aria-label="Warden priority filter">
+                <option value="ALL">All Priorities</option>
+                <option value="Emergency">Emergency</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+
+              <select class="filter-select" id="admin-block-filter" aria-label="Warden block filter">
+                <option value="ALL">All Blocks</option>
+                <option value="Block A">Block A</option>
+                <option value="Block B">Block B</option>
+                <option value="Block C">Block C</option>
+                <option value="Block D">Block D</option>
+                <option value="PG Block">PG Block</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-chips-row">
+            <span style="font-weight: 600; color: var(--color-text-secondary);">Showing:</span>
+            <span id="admin-table-count" style="font-weight: 700; color: var(--color-text-main);">0 records</span>
+          </div>
+        </div>
+
+        <!-- Warden Table -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="admin-table" aria-label="Complaints management table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Title / Student</th>
+                  <th>Category</th>
+                  <th>Location</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Assigned To</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-complaints-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 9: WARDEN MAINTENANCE WORK
+           ==================================================================== -->
+      <section class="view-section" id="view-warden-maintenance">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Hostel Maintenance Work Orders</h1>
+            <p>Planned preventative maintenance schedules, tank cleanings, vendor AMC visits, and servicing.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="window.adminController.openCreateNoticeModal()">+ Schedule Activity</button>
+          </div>
+        </div>
+
+        <div class="notices-grid" id="warden-maintenance-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 10: WARDEN NOTICES MANAGEMENT
+           ==================================================================== -->
+      <section class="view-section" id="view-warden-notices">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Manage Hostel Notices & Announcements</h1>
+            <p>Publish hostel-wide or block-specific bulletins. Expired notices are archived automatically.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="window.adminController.openCreateNoticeModal()">+ Create Notice</button>
+          </div>
+        </div>
+
+        <div class="notices-grid" id="warden-notices-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 11: WARDEN ANALYTICS & REPORTS
+           ==================================================================== -->
+      <section class="view-section" id="view-warden-analytics">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Maintenance Analytics & Failure Metrics</h1>
+            <p>Calculated live from stored complaint records. Visualizes distribution by facility category, hostel block, and resolution speed.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary" onclick="window.storageManager.exportComplaintsToCSV()">Export Safe CSV</button>
+          </div>
+        </div>
+
+        <!-- Metric Highlight Cards -->
+        <div class="metrics-summary-row">
+          <div class="metric-highlight">
+            <div class="metric-highlight-val" id="analytics-stat-total">0</div>
+            <div class="metric-highlight-lbl">Total Logged</div>
+          </div>
+          <div class="metric-highlight">
+            <div class="metric-highlight-val" id="analytics-stat-open">0</div>
+            <div class="metric-highlight-lbl">Currently Open</div>
+          </div>
+          <div class="metric-highlight">
+            <div class="metric-highlight-val" id="analytics-stat-resolved">0</div>
+            <div class="metric-highlight-lbl">Resolved</div>
+          </div>
+          <div class="metric-highlight">
+            <div class="metric-highlight-val" id="analytics-stat-avg-time">N/A</div>
+            <div class="metric-highlight-lbl">Avg Resolution</div>
+          </div>
+          <div class="metric-highlight">
+            <div class="metric-highlight-val" id="analytics-stat-overdue">0</div>
+            <div class="metric-highlight-lbl">Overdue Issues</div>
+          </div>
+          <div class="metric-highlight">
+            <div class="metric-highlight-val" id="analytics-stat-top-cat">None</div>
+            <div class="metric-highlight-lbl">Top Category</div>
+          </div>
+        </div>
+
+        <!-- Visual Charts Grid (Pure CSS & HTML in Sage Green & Warm Neutrals) -->
+        <div class="analytics-grid">
+          <!-- By Category -->
+          <div class="chart-card">
+            <div class="chart-card-title">
+              <span>Complaints by Category</span>
+              <span style="font-size: 0.75rem; color: var(--color-text-secondary);">Relative volume</span>
+            </div>
+            <div id="chart-category-container"></div>
+          </div>
+
+          <!-- By Status -->
+          <div class="chart-card">
+            <div class="chart-card-title">
+              <span>Status Distribution</span>
+              <span style="font-size: 0.75rem; color: var(--color-text-secondary);">Workflow breakdown</span>
+            </div>
+            <div id="chart-status-container"></div>
+          </div>
+
+          <!-- By Hostel Block -->
+          <div class="chart-card">
+            <div class="chart-card-title">
+              <span>Complaints by Hostel Block</span>
+              <span style="font-size: 0.75rem; color: var(--color-text-secondary);">Infrastructure load</span>
+            </div>
+            <div id="chart-block-container"></div>
+          </div>
+
+          <!-- 7-Day Trend -->
+          <div class="chart-card">
+            <div class="chart-card-title">
+              <span>7-Day Submission Volume</span>
+              <span style="font-size: 0.75rem; color: var(--color-text-secondary);">Daily breakdown</span>
+            </div>
+            <div id="chart-trends-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 12: WARDEN SETTINGS & DEMO CONTROLS
+           ==================================================================== -->
+      <section class="view-section" id="view-warden-settings">
+        <div class="page-header">
+          <div class="page-header-text">
+            <h1>Demo Settings & Data Controls</h1>
+            <p>Manage demonstration dataset, review browser storage limitations, and reset sample data.</p>
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 800px;">
+          <div class="card-header">
+            <h2 class="card-title">Prototype Architecture & Limitations</h2>
+          </div>
+          <div class="card-body">
+            <p style="font-size: 0.85rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 1rem;">
+              <strong>Fix My Hostel</strong> is an offline-capable client-side prototype. It relies on standard browser <code>localStorage</code> to persist complaint tickets, public updates, warden notes, and notices across reloads.
+            </p>
+            <ul style="font-size: 0.83rem; color: var(--color-text-secondary); margin-left: 1.25rem; line-height: 1.6; margin-bottom: 1.5rem;">
+              <li>Storage is scoped to your current browser profile on this machine. Data will not sync across other physical devices.</li>
+              <li>The demo role switcher simulates both student and warden workflows using the same shared complaint database.</li>
+              <li>Internal warden notes are strictly isolated and never rendered in student views or exported to public CSV files.</li>
+              <li>Complaint IDs (e.g. <code>FMH-2026-0001</code>) are generated incrementally based on highest existing recorded numbers.</li>
+            </ul>
+
+            <div style="padding: 1.25rem; background-color: #FFF6F5; border: 1px solid var(--status-emergency-border); border-radius: var(--radius-sm);">
+              <h3 style="font-size: 0.95rem; font-weight: 700; color: #781C1A; margin-bottom: 0.35rem;">Reset Demonstration Data</h3>
+              <p style="font-size: 0.82rem; color: #781C1A; margin-bottom: 1rem;">
+                Restore original seed records across diverse categories (plumbing, Wi-Fi, electricity), statuses, and notices. Your newly submitted tickets will be replaced with clean demo records.
+              </p>
+              <button class="btn btn-outline-danger" id="btn-reset-demo-data">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Reset to Default Demo Records
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.page-content-wrapper -->
+  </main>
+
+</div><!-- /#app-container -->
+
+<!-- ========================================================================
+     MODALS
+     ======================================================================== -->
+
+<!-- 1. COMPLAINT DETAILS & TRACKING MODAL -->
+<div class="modal-overlay" id="complaint-detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-modal-title">
+  <div class="modal-dialog lg">
+    <div class="modal-header">
+      <h3 class="modal-title" id="detail-modal-title">Complaint Details</h3>
+      <button class="modal-close-btn" data-modal-close="complaint-detail-modal" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="modal-body" id="detail-modal-body">
+      <!-- Injected dynamically -->
+    </div>
+    <div class="modal-footer" id="detail-modal-footer">
+      <button class="btn btn-secondary" data-modal-close="complaint-detail-modal">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. CONFIRM SUBMISSION MODAL -->
+<div class="modal-overlay" id="confirm-submission-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-heading">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title" id="confirm-modal-heading">Confirm Complaint Submission</h3>
+      <button class="modal-close-btn" data-modal-close="confirm-submission-modal" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 0.75rem;">
+        Please review your complaint summary before logging it into the hostel maintenance registry:
+      </p>
+      <div id="confirm-modal-details"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-modal-close="confirm-submission-modal">Go Back & Edit</button>
+      <button class="btn btn-primary" id="btn-confirm-submit">Confirm & Submit Ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3. WARDEN MANAGE STATUS & ASSIGNMENT MODAL -->
+<div class="modal-overlay" id="manage-status-modal" role="dialog" aria-modal="true" aria-labelledby="manage-status-modal-title">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title" id="manage-status-modal-title">Manage Complaint Action</h3>
+      <button class="modal-close-btn" data-modal-close="manage-status-modal" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="manage-status-select" class="form-label">Update Status <span class="required-star">*</span></label>
+        <select id="manage-status-select" class="form-control">
+          <option value="Submitted">Submitted (Pending Review)</option>
+          <option value="Acknowledged">Acknowledged (Verified by Warden)</option>
+          <option value="In Progress">In Progress (Work Assigned)</option>
+          <option value="Resolved">Resolved (Work Completed)</option>
+          <option value="Reopened">Reopened</option>
+          <option value="Overdue">Overdue</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="manage-staff-select" class="form-label">Assign Maintenance Staff / Team</label>
+        <select id="manage-staff-select" class="form-control">
+          <option value="">-- Leave Unassigned --</option>
+          <option value="Ramu (Electrician)">Ramu (Electrician)</option>
+          <option value="Sunder (Plumbing & Heating)">Sunder (Plumbing & Heating)</option>
+          <option value="Mohan (Carpentry & Hardware)">Mohan (Carpentry & Hardware)</option>
+          <option value="CleanPro Sanitation Team">CleanPro Sanitation Team</option>
+          <option value="Campus IT Network Team">Campus IT Network Team</option>
+          <option value="Security Desk Guard">Security Desk Guard</option>
+          <option value="Civil Mason Team">Civil Mason Team</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="manage-est-time" class="form-label">Estimated Completion Time</label>
+        <input type="text" id="manage-est-time" class="form-control" placeholder="e.g., Today 5:00 PM, Tomorrow by noon">
+      </div>
+
+      <!-- Mandatory Resolution Notes when Resolved -->
+      <div class="form-group" id="manage-resolution-group" style="display: none; background: var(--status-resolved-bg); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--status-resolved-border);">
+        <label for="manage-resolution-notes" class="form-label" style="color: var(--status-resolved-text);">
+          Resolution Notes <span class="required-star">*</span> (Mandatory when resolving)
+        </label>
+        <textarea id="manage-resolution-notes" class="form-control" rows="3" placeholder="Explain how the issue was fixed, parts replaced, and verification done..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="manage-action-notes" class="form-label">Public Note / Update for Student (Optional)</label>
+        <input type="text" id="manage-action-notes" class="form-control" placeholder="e.g., Plumber visited, awaiting replacement valve from store">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-modal-close="manage-status-modal">Cancel</button>
+      <button class="btn btn-primary" id="btn-save-status-manage">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. CREATE NOTICE MODAL -->
+<div class="modal-overlay" id="create-notice-modal" role="dialog" aria-modal="true" aria-labelledby="create-notice-modal-title">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title" id="create-notice-modal-title">Create Official Notice / Maintenance</h3>
+      <button class="modal-close-btn" data-modal-close="create-notice-modal" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="create-notice-form">
+        <div class="form-group">
+          <label for="notice-title" class="form-label">Notice Title <span class="required-star">*</span></label>
+          <input type="text" id="notice-title" class="form-control" placeholder="e.g., Overhead Water Tank Cleaning" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="notice-category" class="form-label">Category <span class="required-star">*</span></label>
+            <select id="notice-category" class="form-control" required>
+              <option value="Water Supply">Water Supply</option>
+              <option value="Electricity">Electricity</option>
+              <option value="Cleaning">Cleaning</option>
+              <option value="Pest Control">Pest Control</option>
+              <option value="Wi-Fi">Wi-Fi & IT</option>
+              <option value="General">General Announcement</option>
+              <option value="Inspection">Inspection</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notice-audience" class="form-label">Target Block</label>
+            <select id="notice-audience" class="form-control">
+              <option value="All Blocks">All Blocks</option>
+              <option value="Block A">Block A</option>
+              <option value="Block B">Block B</option>
+              <option value="Block C">Block C</option>
+              <option value="Block D">Block D</option>
+              <option value="PG Block">PG Block</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="notice-priority" class="form-label">Priority</label>
+            <select id="notice-priority" class="form-control">
+              <option value="Normal">Normal</option>
+              <option value="Urgent">Urgent Notice</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notice-expires-at" class="form-label">Expiry Date (Optional)</label>
+            <input type="date" id="notice-expires-at" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notice-scheduled-date" class="form-label">Scheduled Time Window</label>
+          <input type="text" id="notice-scheduled-date" class="form-control" placeholder="e.g., Saturday 9:00 AM - 1:00 PM">
+        </div>
+
+        <div class="form-group">
+          <label for="notice-desc" class="form-label">Description & Instructions <span class="required-star">*</span></label>
+          <textarea id="notice-desc" class="form-control" rows="3" placeholder="Provide full details, precautions for students..." required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+          <button type="button" class="btn btn-secondary" data-modal-close="create-notice-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Publish Notice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================
+     TOAST NOTIFICATION CONTAINER
+     ======================================================================== -->
+<div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ========================================================================
+     JAVASCRIPT MODULES (Native ES6+, Static Compatible)
+     ======================================================================== -->
+<script src="js/storage.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/complaints.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
