@@ -471,11 +471,6 @@ class StorageManager {
       if (!localStorage.getItem(STORAGE_KEYS.VOTES)) {
         localStorage.setItem(STORAGE_KEYS.VOTES, JSON.stringify(["FMH-2026-0001", "FMH-2026-0002"]));
       }
-
-      // Initialize Role (default to student)
-      if (!localStorage.getItem(STORAGE_KEYS.CURRENT_ROLE)) {
-        localStorage.setItem(STORAGE_KEYS.CURRENT_ROLE, 'student');
-      }
     } catch (e) {
       console.error("Storage initialization error:", e);
     }
@@ -681,7 +676,10 @@ class StorageManager {
   }
 
   getRole() {
-    return localStorage.getItem(STORAGE_KEYS.CURRENT_ROLE) || 'student';
+    if (window.authManager && window.authManager.isAuthenticated()) {
+      return window.authManager.getRole();
+    }
+    return localStorage.getItem(STORAGE_KEYS.CURRENT_ROLE) || null;
   }
 
   setRole(role) {

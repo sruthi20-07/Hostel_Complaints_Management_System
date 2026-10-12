@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Details & Timeline — Fix My Hostel</title>
+  <meta name="description" content="View detailed facility complaint progress, public updates, and audit timeline.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app-container">
+
+  <!-- SIDEBAR -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/logo.svg" alt="Fix My Hostel Logo" class="brand-logo" width="34" height="34">
+      <div class="brand-text">
+        <span class="brand-title">Fix My Hostel</span>
+        <span class="brand-subtitle" id="sidebar-role-title">Details View</span>
+      </div>
+    </div>
+
+    <div class="sidebar-role-indicator" id="sidebar-role-indicator">
+      <!-- Injected -->
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Navigation</div>
+      <ul class="nav-list" id="sidebar-nav-links">
+        <!-- Injected -->
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile" id="sidebar-profile-snippet"></div>
+      <button class="logout-btn" style="width: 100%; margin-top: 0.65rem; justify-content: center;" onclick="window.authManager.logout()">
+        <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Logout Session</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <main class="app-main">
+    <header class="app-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle-btn" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+        <div class="page-breadcrumb">
+          <a href="complaints.html" style="color: var(--color-text-secondary); text-decoration: none;">Complaints</a>
+          <span>/</span>
+          <span class="current" id="breadcrumb-complaint-id">Details</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div id="nav-user-controls" class="nav-user-controls"></div>
+        <a href="complaints.html" class="btn btn-secondary btn-sm">&larr; Back to Complaints</a>
+      </div>
+    </header>
+
+    <div class="page-content-wrapper" style="max-width: 960px;">
+
+      <div id="complaint-not-found-view" style="display: none;" class="card">
+        <div class="card-body empty-state">
+          <div class="empty-state-title">Complaint Not Found</div>
+          <div class="empty-state-desc">The complaint ticket ID does not exist in local records.</div>
+          <a href="complaints.html" class="btn btn-primary btn-sm">Return to Complaints List</a>
+        </div>
+      </div>
+
+      <div id="complaint-details-container">
+        <!-- Header Card -->
+        <div class="card" style="margin-bottom: 1.25rem;">
+          <div class="card-body">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                  <span class="complaint-id-tag" id="detail-id" style="font-size: 0.95rem;">FMH-2026-0000</span>
+                  <span style="font-size: 0.8rem; color: var(--color-text-secondary);" id="detail-created-date"></span>
+                </div>
+                <h1 style="font-size: 1.35rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 0.25rem;" id="detail-title">Loading...</h1>
+                <div style="font-size: 0.82rem; color: var(--color-text-secondary);" id="detail-submitted-by"></div>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span id="detail-priority-badge" class="badge"></span>
+                <span id="detail-status-badge" class="badge"></span>
+              </div>
+            </div>
+
+            <!-- Metadata Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem; background-color: var(--color-bg-subtle); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: 0.82rem;">
+              <div><strong>Category:</strong> <span id="detail-category"></span></div>
+              <div><strong>Location:</strong> <span id="detail-location"></span></div>
+              <div><strong>Assigned To:</strong> <span id="detail-assigned">Unassigned</span></div>
+              <div><strong>Est. Completion:</strong> <span id="detail-est-time">Pending</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description & Attached Photo Card -->
+        <div class="card" style="margin-bottom: 1.25rem;">
+          <div class="card-header">
+            <h2 class="card-title">Issue Description</h2>
+          </div>
+          <div class="card-body">
+            <p id="detail-description" style="font-size: 0.9rem; line-height: 1.6; color: var(--color-text-main); white-space: pre-wrap; margin-bottom: 1rem;"></p>
+            <div id="detail-photo-container" style="display: none;">
+              <h3 style="font-size: 0.82rem; font-weight: 700; color: var(--color-text-secondary); margin-bottom: 0.45rem;">Attached Photo</h3>
+              <img id="detail-photo-img" src="" alt="Complaint photo" style="max-width: 100%; max-height: 280px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); object-fit: contain;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Resolution Notes Box (when resolved) -->
+        <div id="detail-resolution-card" class="card" style="display: none; border-left: 4px solid #1E4E25; background-color: var(--status-resolved-bg); margin-bottom: 1.25rem;">
+          <div class="card-body">
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--status-resolved-text); margin-bottom: 0.35rem;">
+              Official Resolution Notes
+            </h3>
+            <div id="detail-resolution-text" style="font-size: 0.85rem; color: var(--status-resolved-text); line-height: 1.5;"></div>
+            <div id="detail-resolved-at" style="font-size: 0.75rem; color: var(--status-resolved-text); margin-top: 0.5rem; opacity: 0.85;"></div>
+          </div>
+        </div>
+
+        <!-- Warden Management Actions Bar (Shown ONLY to Warden) -->
+        <div id="warden-actions-card" class="card" style="display: none; border: 1px solid var(--color-accent); margin-bottom: 1.25rem;">
+          <div class="card-header" style="background-color: var(--color-bg-subtle);">
+            <div class="card-title-group">
+              <h2 class="card-title" style="color: var(--color-accent-dark);">Warden Management Controls</h2>
+              <span class="card-subtitle">Update complaint lifecycle status and assign maintenance staff</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="action-status-select" class="form-label">Update Status</label>
+                <select id="action-status-select" class="form-control">
+                  <option value="Submitted">Submitted (Under Review)</option>
+                  <option value="Acknowledged">Acknowledged (Verified)</option>
+                  <option value="In Progress">In Progress (Work Assigned)</option>
+                  <option value="Resolved">Resolved (Work Completed)</option>
+                  <option value="Reopened">Reopened</option>
+                  <option value="Overdue">Overdue</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="action-staff-select" class="form-label">Assign Technician</label>
+                <select id="action-staff-select" class="form-control">
+                  <option value="">-- Unassigned --</option>
+                  <option value="Ramu (Electrician)">Ramu (Electrician)</option>
+                  <option value="Sunder (Plumbing & Heating)">Sunder (Plumbing & Heating)</option>
+                  <option value="Mohan (Carpentry & Hardware)">Mohan (Carpentry & Hardware)</option>
+                  <option value="CleanPro Sanitation Team">CleanPro Sanitation Team</option>
+                  <option value="Campus IT Network Team">Campus IT Network Team</option>
+                  <option value="Security Desk Guard">Security Desk Guard</option>
+                  <option value="Civil Mason Team">Civil Mason Team</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="action-est-time" class="form-label">Estimated Completion</label>
+              <input type="text" id="action-est-time" class="form-control" placeholder="e.g., Today 4:00 PM, Tomorrow afternoon">
+            </div>
+
+            <!-- Mandatory Resolution Notes when resolving -->
+            <div class="form-group" id="action-resolution-group" style="display: none; background: #FFFDF8; padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <label for="action-resolution-notes" class="form-label">Resolution Notes <span class="required-star">*</span> (Mandatory when resolving)</label>
+              <textarea id="action-resolution-notes" class="form-control" rows="3" placeholder="Describe the repairs performed, replaced components, and verification..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="action-public-note" class="form-label">Public Note for Student (Optional)</label>
+              <input type="text" id="action-public-note" class="form-control" placeholder="e.g., Plumber dispatched with spare valve">
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center; margin-top: 1rem;">
+              <button class="btn btn-secondary btn-sm" onclick="window.promptAddInternalNote()">+ Add Private Note</button>
+              <button class="btn btn-primary" id="btn-save-warden-action">Save Changes &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Reopen Bar (Shown ONLY to Student if Resolved) -->
+        <div id="student-reopen-card" class="card" style="display: none; background-color: var(--color-bg-subtle); margin-bottom: 1.25rem;">
+          <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+            <div>
+              <h3 style="font-size: 0.92rem; font-weight: 700; color: var(--color-text-main); margin-bottom: 0.2rem;">Has this issue not been resolved?</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-secondary);">If the problem persists or has recurred, you can request reopening of this complaint.</p>
+            </div>
+            <button class="btn btn-accent btn-sm" onclick="window.promptStudentReopen()">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reopen Complaint
+            </button>
+          </div>
+        </div>
+
+        <!-- Public Progress Updates Stream -->
+        <div class="card" style="margin-bottom: 1.25rem;">
+          <div class="card-header">
+            <h2 class="card-title">Public Progress Updates</h2>
+          </div>
+          <div class="card-body" id="detail-public-updates"></div>
+        </div>
+
+        <!-- Internal Notes Card (Warden ONLY) -->
+        <div id="warden-internal-notes-card" class="card" style="display: none; border: 1px dashed var(--color-accent); margin-bottom: 1.25rem;">
+          <div class="card-header" style="background-color: #FFFDF5;">
+            <div class="card-title-group">
+              <h2 class="card-title" style="color: var(--color-accent-dark); font-size: 0.95rem;">
+                Internal Warden Notes (Confidential)
+              </h2>
+              <span class="card-subtitle">These management notes are hidden from hostel students.</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="window.promptAddInternalNote()">+ Add Note</button>
+          </div>
+          <div class="card-body" id="detail-internal-notes"></div>
+        </div>
+
+        <!-- Full Audit Timeline -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Complete Audit Timeline</h2>
+          </div>
+          <div class="card-body">
+            <div class="timeline" id="detail-timeline"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- Scripts -->
+<script src="js/storage.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let activeComplaint = null;
+  let currentUser = null;
+  let currentRole = null;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.authManager.isAuthenticated()) {
+      window.location.href = 'login-selection.html';
+      return;
+    }
+
+    currentUser = window.authManager.getCurrentUser();
+    currentRole = window.authManager.getRole();
+
+    setupSidebar();
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    if (!id) {
+      showNotFound();
+      return;
+    }
+
+    activeComplaint = window.storageManager.getComplaintById(id);
+    if (!activeComplaint) {
+      showNotFound();
+      return;
+    }
+
+    renderComplaintDetails(activeComplaint);
+  });
+
+  function showNotFound() {
+    document.getElementById('complaint-not-found-view').style.display = 'block';
+    document.getElementById('complaint-details-container').style.display = 'none';
+  }
+
+  function setupSidebar() {
+    window.authManager.renderNavUserControls();
+
+    const roleTag = document.getElementById('sidebar-role-indicator');
+    const roleTitle = document.getElementById('sidebar-role-title');
+    const navLinks = document.getElementById('sidebar-nav-links');
+    const profileSnippet = document.getElementById('sidebar-profile-snippet');
+
+    if (currentRole === 'warden') {
+      roleTitle.textContent = 'Warden Administration';
+      roleTag.innerHTML = `<span class="role-tag warden">Warden</span>`;
+      navLinks.innerHTML = `
+        <li><a href="warden-dashboard.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Overview</span></a></li>
+        <li><a href="complaints.html" class="nav-item-btn active"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg><span>All Complaints</span></a></li>
+        <li><a href="community.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Community Issues</span></a></li>
+        <li><a href="maintenance.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Maintenance Work</span></a></li>
+        <li><a href="notices.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Notices</span></a></li>
+        <li><a href="analytics.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><span>Analytics & CSV</span></a></li>
+        <li><a href="emergency-contacts.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Emergency Contacts</span></a></li>
+      `;
+      profileSnippet.innerHTML = `
+        <div class="user-avatar" style="background-color: var(--color-accent);">W</div>
+        <div class="user-meta">
+          <div class="user-meta-name">${currentUser.name}</div>
+          <div class="user-meta-detail">Chief Warden</div>
+        </div>
+      `;
+    } else {
+      roleTitle.textContent = 'Student Portal';
+      roleTag.innerHTML = `<span class="role-tag student">Student</span>`;
+      navLinks.innerHTML = `
+        <li><a href="student-dashboard.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg><span>Dashboard</span></a></li>
+        <li><a href="complaints.html?action=new" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg><span>Report an Issue</span></a></li>
+        <li><a href="complaints.html" class="nav-item-btn active"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>My Complaints</span></a></li>
+        <li><a href="community.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Community Issues</span></a></li>
+        <li><a href="maintenance.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Maintenance Work</span></a></li>
+        <li><a href="notices.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Notices & Schedule</span></a></li>
+        <li><a href="emergency-contacts.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Emergency Contacts</span></a></li>
+      `;
+      profileSnippet.innerHTML = `
+        <div class="user-avatar">S</div>
+        <div class="user-meta">
+          <div class="user-meta-name">${currentUser.name}</div>
+          <div class="user-meta-detail">${currentUser.room}</div>
+        </div>
+      `;
+    }
+
+    const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const sidebar = document.getElementById('app-sidebar');
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', () => sidebar.classList.toggle('mobile-open'));
+    }
+  }
+
+  function renderComplaintDetails(c) {
+    document.getElementById('breadcrumb-complaint-id').textContent = c.id;
+    document.getElementById('detail-id').textContent = c.id;
+    document.getElementById('detail-title').textContent = c.title;
+
+    const createdStr = new Date(c.createdAt).toLocaleDateString(undefined, {
+      month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+    document.getElementById('detail-created-date').textContent = `Submitted ${createdStr}`;
+
+    const studentInfo = c.submittedBy ? `${c.submittedBy.name} (${c.submittedBy.studentId || c.submittedBy.id})` : 'Student';
+    document.getElementById('detail-submitted-by').textContent = `Reported by: ${studentInfo}`;
+
+    // Badges
+    const statusKey = c.status.toLowerCase().replace(/\s+/g, '');
+    const priorityKey = c.priority.toLowerCase();
+    const statusIcon = window.app ? window.app.getStatusIcon(c.status) : '';
+
+    const pBadge = document.getElementById('detail-priority-badge');
+    pBadge.className = `badge badge-priority-${priorityKey}`;
+    pBadge.textContent = `${c.priority} Priority`;
+
+    const sBadge = document.getElementById('detail-status-badge');
+    sBadge.className = `badge badge-status-${statusKey}`;
+    sBadge.innerHTML = `${statusIcon} ${c.status}`;
+
+    // Metadata
+    document.getElementById('detail-category').textContent = c.category;
+    document.getElementById('detail-location').textContent = `${c.block} · ${c.room || c.floor} ${c.isCommonArea ? '(Common Area)' : ''}`;
+    document.getElementById('detail-assigned').textContent = c.assignedTo || 'Unassigned';
+    document.getElementById('detail-est-time').textContent = c.estimatedCompletion || 'Pending evaluation';
+
+    // Description & Photo
+    document.getElementById('detail-description').textContent = c.description;
+    if (c.imageAttachment) {
+      document.getElementById('detail-photo-container').style.display = 'block';
+      document.getElementById('detail-photo-img').src = c.imageAttachment;
+    }
+
+    // Resolution Notes Card
+    const resCard = document.getElementById('detail-resolution-card');
+    if (c.status === 'Resolved' && c.resolutionNotes) {
+      resCard.style.display = 'block';
+      document.getElementById('detail-resolution-text').textContent = c.resolutionNotes;
+      if (c.resolvedAt) {
+        document.getElementById('detail-resolved-at').textContent = `Resolved on ${new Date(c.resolvedAt).toLocaleString()}`;
+      }
+    } else {
+      resCard.style.display = 'none';
+    }
+
+    // Public Progress Updates
+    const publicContainer = document.getElementById('detail-public-updates');
+    if (c.publicUpdates && c.publicUpdates.length > 0) {
+      publicContainer.innerHTML = c.publicUpdates.map(u => `
+        <div class="update-box-public">
+          <div class="update-box-meta">
+            <span><strong>${Validator.escapeHtml(u.author)}</strong></span>
+            <span>${new Date(u.timestamp).toLocaleString()}</span>
+          </div>
+          <div class="update-box-content">${Validator.escapeHtml(u.message)}</div>
+        </div>
+      `).join('');
+    } else {
+      publicContainer.innerHTML = '<p style="font-size: 0.82rem; color: var(--color-text-muted); font-style: italic;">No public progress updates posted yet.</p>';
+    }
+
+    // Internal Notes (WARDEN ONLY!)
+    const internalCard = document.getElementById('warden-internal-notes-card');
+    if (currentRole === 'warden') {
+      internalCard.style.display = 'block';
+      const internalContainer = document.getElementById('detail-internal-notes');
+      if (c.internalNotes && c.internalNotes.length > 0) {
+        internalContainer.innerHTML = c.internalNotes.map(n => `
+          <div class="update-box-internal">
+            <div class="update-box-meta">
+              <span><strong>${Validator.escapeHtml(n.author)}</strong></span>
+              <span>${new Date(n.timestamp).toLocaleString()}</span>
+            </div>
+            <div class="update-box-content">${Validator.escapeHtml(n.message)}</div>
+          </div>
+        `).join('');
+      } else {
+        internalContainer.innerHTML = '<p style="font-size: 0.82rem; color: var(--color-text-muted); font-style: italic;">No internal notes recorded.</p>';
+      }
+    } else {
+      internalCard.style.display = 'none';
+    }
+
+    // Role-Specific Action Bars
+    const wardenActions = document.getElementById('warden-actions-card');
+    const studentReopen = document.getElementById('student-reopen-card');
+
+    if (currentRole === 'warden') {
+      wardenActions.style.display = 'block';
+      bindWardenControls(c);
+    } else {
+      wardenActions.style.display = 'none';
+      if (c.status === 'Resolved') {
+        studentReopen.style.display = 'block';
+      } else {
+        studentReopen.style.display = 'none';
+      }
+    }
+
+    // Timeline
+    renderTimeline(c.history || []);
+  }
+
+  function renderTimeline(history) {
+    const container = document.getElementById('detail-timeline');
+    if (!history || history.length === 0) {
+      container.innerHTML = '<p style="font-size: 0.8rem; color: var(--color-text-muted);">No timeline events recorded.</p>';
+      return;
+    }
+
+    container.innerHTML = history.map(step => {
+      const stepDate = new Date(step.timestamp).toLocaleString();
+      return `
+        <div class="timeline-step">
+          <div class="timeline-marker ${step.status === 'Resolved' ? 'resolved' : ''}">
+            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-action-title">${Validator.escapeHtml(step.action)}</span>
+              <span class="timeline-time">${stepDate}</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--color-text-secondary); font-weight: 600;">
+              By: ${Validator.escapeHtml(step.actor)} · Status: <strong>${step.status}</strong>
+            </div>
+            ${step.note ? `<div class="timeline-note">${Validator.escapeHtml(step.note)}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function bindWardenControls(c) {
+    const statusSelect = document.getElementById('action-status-select');
+    const staffSelect = document.getElementById('action-staff-select');
+    const estInput = document.getElementById('action-est-time');
+    const resGroup = document.getElementById('action-resolution-group');
+    const resNotes = document.getElementById('action-resolution-notes');
+    const saveBtn = document.getElementById('btn-save-warden-action');
+
+    statusSelect.value = c.status;
+    staffSelect.value = c.assignedTo || '';
+    estInput.value = c.estimatedCompletion || '';
+    if (resNotes) resNotes.value = c.resolutionNotes || '';
+
+    const checkRes = () => {
+      resGroup.style.display = statusSelect.value === 'Resolved' ? 'block' : 'none';
+    };
+    statusSelect.onchange = checkRes;
+    checkRes();
+
+    saveBtn.onclick = () => {
+      const newStatus = statusSelect.value;
+      const staff = staffSelect.value;
+      const est = estInput.value.trim();
+      const pubNote = document.getElementById('action-public-note').value.trim();
+      const resolution = resNotes ? resNotes.value.trim() : '';
+
+      if (newStatus === 'Resolved' && !resolution) {
+        alert("Mandatory: Resolution notes are required before resolving a complaint.");
+        return;
+      }
+
+      const now = new Date().toISOString();
+      const oldStatus = c.status;
+
+      const updated = window.storageManager.updateComplaint(c.id, item => {
+        item.status = newStatus;
+        item.assignedTo = staff || null;
+        item.estimatedCompletion = est || null;
+
+        if (newStatus === 'Resolved') {
+          item.resolutionNotes = resolution;
+          item.resolvedAt = item.resolvedAt || now;
+        }
+
+        if (!Array.isArray(item.history)) item.history = [];
+        item.history.push({
+          timestamp: now,
+          action: oldStatus !== newStatus ? `Status changed to ${newStatus}` : 'Warden update recorded',
+          status: newStatus,
+          actor: 'Chief Warden',
+          note: pubNote || (newStatus === 'Resolved' ? resolution : `Assigned to ${staff || 'team'}`),
+          isPublic: true
+        });
+
+        if (oldStatus !== newStatus || pubNote) {
+          if (!Array.isArray(item.publicUpdates)) item.publicUpdates = [];
+          let msg = `Status updated to "${newStatus}".`;
+          if (staff) msg += ` Assigned to ${staff}.`;
+          if (pubNote) msg += ` Note: ${pubNote}`;
+          if (newStatus === 'Resolved') msg = `Issue resolved: ${resolution}`;
+          item.publicUpdates.push({ timestamp: now, message: msg, author: 'Warden Office' });
+        }
+
+        return item;
+      });
+
+      alert(`Complaint ${c.id} successfully updated!`);
+      location.reload();
+    };
+  }
+
+  window.promptAddInternalNote = function() {
+    const note = prompt("Enter internal confidential note (Warden only, hidden from student):");
+    if (!note || !note.trim()) return;
+
+    const now = new Date().toISOString();
+    window.storageManager.updateComplaint(activeComplaint.id, item => {
+      if (!Array.isArray(item.internalNotes)) item.internalNotes = [];
+      item.internalNotes.push({
+        timestamp: now,
+        message: note.trim(),
+        author: 'Chief Warden'
+      });
+      return item;
+    });
+
+    alert("Internal management note recorded.");
+    location.reload();
+  };
+
+  window.promptStudentReopen = function() {
+    const reason = prompt("Please describe why you are reopening this resolved complaint (e.g., Problem persisted, recurrence):");
+    if (reason === null) return;
+    if (!reason.trim()) {
+      alert("A reason is required to reopen a resolved complaint.");
+      return;
+    }
+
+    const now = new Date().toISOString();
+    window.storageManager.updateComplaint(activeComplaint.id, item => {
+      item.status = 'Reopened';
+      item.updatedAt = now;
+      if (!Array.isArray(item.history)) item.history = [];
+      item.history.push({
+        timestamp: now,
+        action: 'Complaint Reopened by Student',
+        status: 'Reopened',
+        actor: `${currentUser.name} (Student)`,
+        note: `Reopened: ${reason.trim()}`,
+        isPublic: true
+      });
+      if (!Array.isArray(item.publicUpdates)) item.publicUpdates = [];
+      item.publicUpdates.push({
+        timestamp: now,
+        message: `Issue reopened by resident: "${reason.trim()}". Further inspection required.`,
+        author: `${currentUser.name} (Student)`
+      });
+      return item;
+    });
+
+    alert("Complaint has been reopened.");
+    location.reload();
+  };
+</script>
+</body>
+</html>

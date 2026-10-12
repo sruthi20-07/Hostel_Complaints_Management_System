@@ -235,7 +235,7 @@ class AuthManager {
   setSession(sessionData) {
     try {
       sessionStorage.setItem(AUTH_KEYS.SESSION, JSON.stringify(sessionData));
-      // Also sync to localStorage active role key for backward compatibility
+      localStorage.setItem(AUTH_KEYS.SESSION, JSON.stringify(sessionData));
       localStorage.setItem('fmh_current_role_v1', sessionData.role);
       localStorage.setItem('fmh_user_profile_v1', JSON.stringify(sessionData.user));
     } catch (e) {
@@ -245,20 +245,8 @@ class AuthManager {
 
   getSession() {
     try {
-      const data = sessionStorage.getItem(AUTH_KEYS.SESSION);
-      if (data) return JSON.parse(data);
-
-      // Fallback check in localStorage for seamless development
-      const localRole = localStorage.getItem('fmh_current_role_v1');
-      const localProfile = localStorage.getItem('fmh_user_profile_v1');
-      if (localRole && localProfile) {
-        return {
-          user: JSON.parse(localProfile),
-          role: localRole,
-          loginTime: new Date().toISOString()
-        };
-      }
-
+      const sessionData = sessionStorage.getItem(AUTH_KEYS.SESSION) || localStorage.getItem(AUTH_KEYS.SESSION);
+      if (sessionData) return JSON.parse(sessionData);
       return null;
     } catch (e) {
       return null;
@@ -281,7 +269,9 @@ class AuthManager {
 
   logout() {
     sessionStorage.removeItem(AUTH_KEYS.SESSION);
+    localStorage.removeItem(AUTH_KEYS.SESSION);
     localStorage.removeItem('fmh_current_role_v1');
+    localStorage.removeItem('fmh_user_profile_v1');
     window.location.href = 'login-selection.html';
   }
 

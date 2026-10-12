@@ -2365,3 +2365,28 @@ textarea.form-control {
 .recent-complaints-table tr:hover {
   background-color: var(--color-bg-subtle);
 }
+
+/* Keep text white inside filled buttons, including on hover */
+.btn-primary:hover:not(:disabled),
+.btn-primary:focus-visible,
+.btn-accent:hover:not(:disabled),
+.btn-accent:focus-visible {
+  color: #FFFFFF;
+}
+
+/* Keep text white on filled buttons and green on active dashboard navigation */
+.btn-primary:hover:not(:disabled),
+.btn-primary:focus-visible,
+.btn-accent:hover:not(:disabled),
+.btn-accent:focus-visible,
+.quick-report-btn:hover,
+.quick-report-btn:focus-visible {
+  color: #FFFFFF;
+}
+
+/* Preserve dashboard/navigation text colours on hover */
+.nav-item-btn:hover,
+.nav-item-btn.active:hover {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+}

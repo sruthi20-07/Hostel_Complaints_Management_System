@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Facility Contacts — Fix My Hostel</title>
+  <meta name="description" content="Hostel emergency contacts, security desk, and facility maintenance helplines.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app-container">
+
+  <!-- DYNAMIC SIDEBAR -->
+  <aside class="app-sidebar" id="app-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/logo.svg" alt="Fix My Hostel Logo" class="brand-logo" width="34" height="34">
+      <div class="brand-text">
+        <span class="brand-title">Fix My Hostel</span>
+        <span class="brand-subtitle" id="sidebar-portal-subtitle">Emergency Help</span>
+      </div>
+    </div>
+
+    <div class="sidebar-role-indicator" id="sidebar-role-indicator"></div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Navigation</div>
+      <ul class="nav-list" id="sidebar-nav-links"></ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile" id="sidebar-profile-snippet"></div>
+      <button class="logout-btn" id="sidebar-logout-btn" style="width: 100%; margin-top: 0.65rem; justify-content: center;" onclick="window.authManager.logout()">
+        <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Logout Session</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <main class="app-main">
+    <header class="app-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle-btn" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+        <div class="page-breadcrumb">
+          <span id="breadcrumb-portal-name">Portal</span>
+          <span>/</span>
+          <span class="current">Emergency Facility Contacts</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div id="nav-user-controls" class="nav-user-controls"></div>
+        <a href="complaints.html?action=new" id="btn-emergency-topbar" class="btn btn-primary btn-sm">Report Urgent Ticket</a>
+      </div>
+    </header>
+
+    <div class="page-content-wrapper" style="max-width: 960px;">
+      <div class="page-header">
+        <div class="page-header-text">
+          <h1>Emergency Facility Contacts & Helplines</h1>
+          <p>For urgent hazards involving fire, major electrical sparking, water floods, or personal safety.</p>
+        </div>
+      </div>
+
+      <!-- Critical Hazard Warning Banner -->
+      <div class="emergency-callout" style="margin-bottom: 1.5rem;">
+        <div class="emergency-callout-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="emergency-callout-text">
+          <h4>Immediate Hazard Protocol</h4>
+          <p>
+            Do not rely solely on online web complaints for life-threatening or immediate property hazards. Immediately call the warden on duty or campus security desk below, and evacuate the affected area if necessary.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contacts Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+
+        <!-- 1. Chief Warden Office -->
+        <div class="card" style="border-top: 3px solid var(--color-accent); margin-bottom: 0;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem;">
+              <div class="stat-card-icon" style="background-color: var(--color-accent-light); color: var(--color-accent-dark);">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--color-text-main);">Chief Warden Office</h3>
+                <span style="font-size: 0.76rem; color: var(--color-text-secondary);">Dr. K. Ramanathan</span>
+              </div>
+            </div>
+            <div style="font-size: 0.83rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 0.85rem;">
+              <div>Location: <strong>Admin Block, Ground Floor</strong></div>
+              <div>Availability: <strong>24/7 Hostel Duty</strong></div>
+              <div style="margin-top: 0.45rem;">
+                Phone: <strong style="font-family: var(--font-mono); color: var(--color-text-main);">+91 94441 55678</strong>
+                <span class="badge" style="font-size: 0.68rem; margin-left: 0.25rem; background: var(--color-bg-subtle);">Demo Placeholder</span>
+              </div>
+            </div>
+            <a href="tel:+919444155678" class="btn btn-secondary btn-sm" style="width: 100%;">Call Warden Office</a>
+          </div>
+        </div>
+
+        <!-- 2. Campus Security Desk -->
+        <div class="card" style="border-top: 3px solid #B3261E; margin-bottom: 0;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem;">
+              <div class="stat-card-icon urgent">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--color-text-main);">Campus Security Gate</h3>
+                <span style="font-size: 0.76rem; color: var(--color-text-secondary);">Main Entrance Security</span>
+              </div>
+            </div>
+            <div style="font-size: 0.83rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 0.85rem;">
+              <div>Location: <strong>Hostel Main Gate Post</strong></div>
+              <div>Availability: <strong>Round-the-clock (24/7)</strong></div>
+              <div style="margin-top: 0.45rem;">
+                Phone: <strong style="font-family: var(--font-mono); color: var(--color-text-main);">+91 94441 22334</strong>
+                <span class="badge" style="font-size: 0.68rem; margin-left: 0.25rem; background: var(--color-bg-subtle);">Demo Placeholder</span>
+              </div>
+            </div>
+            <a href="tel:+919444122334" class="btn btn-secondary btn-sm" style="width: 100%;">Call Security Desk</a>
+          </div>
+        </div>
+
+        <!-- 3. Electrician on Duty -->
+        <div class="card" style="border-top: 3px solid var(--color-primary); margin-bottom: 0;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem;">
+              <div class="stat-card-icon" style="background-color: var(--color-primary-light); color: var(--color-primary-dark);">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--color-text-main);">Electrical Maintenance</h3>
+                <span style="font-size: 0.76rem; color: var(--color-text-secondary);">Ramu (Duty Electrician)</span>
+              </div>
+            </div>
+            <div style="font-size: 0.83rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 0.85rem;">
+              <div>Location: <strong>Substation Control Room</strong></div>
+              <div>Availability: <strong>7:00 AM – 11:00 PM</strong></div>
+              <div style="margin-top: 0.45rem;">
+                Phone: <strong style="font-family: var(--font-mono); color: var(--color-text-main);">+91 98401 77665</strong>
+                <span class="badge" style="font-size: 0.68rem; margin-left: 0.25rem; background: var(--color-bg-subtle);">Demo Placeholder</span>
+              </div>
+            </div>
+            <a href="tel:+919840177665" class="btn btn-secondary btn-sm" style="width: 100%;">Call Duty Electrician</a>
+          </div>
+        </div>
+
+        <!-- 4. Plumbing & Water Supply -->
+        <div class="card" style="border-top: 3px solid var(--color-primary); margin-bottom: 0;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem;">
+              <div class="stat-card-icon inprogress">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--color-text-main);">Plumbing & Water Supply</h3>
+                <span style="font-size: 0.76rem; color: var(--color-text-secondary);">Sunder (Hostel Plumber)</span>
+              </div>
+            </div>
+            <div style="font-size: 0.83rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 0.85rem;">
+              <div>Location: <strong>Pump House & Borewell Post</strong></div>
+              <div>Availability: <strong>8:00 AM – 8:00 PM</strong></div>
+              <div style="margin-top: 0.45rem;">
+                Phone: <strong style="font-family: var(--font-mono); color: var(--color-text-main);">+91 98402 88776</strong>
+                <span class="badge" style="font-size: 0.68rem; margin-left: 0.25rem; background: var(--color-bg-subtle);">Demo Placeholder</span>
+              </div>
+            </div>
+            <a href="tel:+919840288776" class="btn btn-secondary btn-sm" style="width: 100%;">Call Duty Plumber</a>
+          </div>
+        </div>
+
+        <!-- 5. Campus Health Centre & Ambulance -->
+        <div class="card" style="border-top: 3px solid var(--color-accent); margin-bottom: 0;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem;">
+              <div class="stat-card-icon" style="background-color: var(--color-accent-light); color: var(--color-accent-dark);">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--color-text-main);">Campus Health Centre</h3>
+                <span style="font-size: 0.76rem; color: var(--color-text-secondary);">Medical Aid & Ambulance</span>
+              </div>
+            </div>
+            <div style="font-size: 0.83rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 0.85rem;">
+              <div>Location: <strong>Adjacent to Student Activity Centre</strong></div>
+              <div>Availability: <strong>24/7 Nursing & Doctor on Call</strong></div>
+              <div style="margin-top: 0.45rem;">
+                Phone: <strong style="font-family: var(--font-mono); color: var(--color-text-main);">+91 94441 99880</strong>
+                <span class="badge" style="font-size: 0.68rem; margin-left: 0.25rem; background: var(--color-bg-subtle);">Demo Placeholder</span>
+              </div>
+            </div>
+            <a href="tel:+919444199880" class="btn btn-secondary btn-sm" style="width: 100%;">Call Health Centre</a>
+          </div>
+        </div>
+
+        <!-- 6. Fire Emergency & Safety Desk -->
+        <div class="card" style="border-top: 3px solid #B3261E; margin-bottom: 0;">
+          <div class="card-body">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem;">
+              <div class="stat-card-icon urgent">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-4-4-6-4-10z"/></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--color-text-main);">Fire Safety Desk</h3>
+                <span style="font-size: 0.76rem; color: var(--color-text-secondary);">Campus Fire Marshals</span>
+              </div>
+            </div>
+            <div style="font-size: 0.83rem; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 0.85rem;">
+              <div>Emergency Alarm: <strong>Break Glass Units at Corridors</strong></div>
+              <div>Extinguishers: <strong>CO2 / Dry Powder at every Stairwell</strong></div>
+              <div style="margin-top: 0.45rem;">
+                Helpline: <strong style="font-family: var(--font-mono); color: var(--color-text-main);">101 / +91 94441 22334</strong>
+                <span class="badge" style="font-size: 0.68rem; margin-left: 0.25rem; background: var(--color-bg-subtle);">Demo Placeholder</span>
+              </div>
+            </div>
+            <a href="tel:101" class="btn btn-outline-danger btn-sm" style="width: 100%;">Emergency Call</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Guidelines Box -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">When to Call vs When to Submit an Online Ticket</h2>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; font-size: 0.84rem; line-height: 1.6;">
+            <div>
+              <h3 style="font-weight: 700; color: #781C1A; margin-bottom: 0.35rem;">Call Immediately For:</h3>
+              <ul style="margin-left: 1.25rem; color: var(--color-text-secondary);">
+                <li>Smoke, burning smell, or active electrical sparks.</li>
+                <li>Major water pipe burst flooding rooms or corridors.</li>
+                <li>Medical emergency or student injury.</li>
+                <li>Security breaches, broken exterior doors, or unauthorized entry.</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="font-weight: 700; color: var(--color-primary-dark); margin-bottom: 0.35rem;">Use Web Complaint System For:</h3>
+              <ul style="margin-left: 1.25rem; color: var(--color-text-secondary);">
+                <li>Slow-dripping water taps or clogged washroom basins.</li>
+                <li>Wi-Fi router offline or weak connectivity.</li>
+                <li>Loose desk screws, chair repairs, or cupboard hinges.</li>
+                <li>Corridor bulb replacement or geyser heating element servicing.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Scripts -->
+<script src="js/storage.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Note: Emergency Contacts is publicly accessible without login
+    const currentUser = window.authManager.getCurrentUser();
+    const currentRole = window.authManager.getRole();
+
+    window.authManager.renderNavUserControls();
+
+    const portalSubtitle = document.getElementById('sidebar-portal-subtitle');
+    const roleIndicator = document.getElementById('sidebar-role-indicator');
+    const navLinks = document.getElementById('sidebar-nav-links');
+    const profileSnippet = document.getElementById('sidebar-profile-snippet');
+    const logoutBtn = document.getElementById('sidebar-logout-btn');
+
+    if (currentRole === 'warden' && currentUser) {
+      portalSubtitle.textContent = 'Warden Administration';
+      document.getElementById('breadcrumb-portal-name').textContent = 'Warden';
+      const topbarAction = document.getElementById('btn-emergency-topbar');
+      if (topbarAction) {
+        topbarAction.href = 'complaints.html?filter=urgent';
+        topbarAction.textContent = 'View Urgent Complaints';
+      }
+      roleIndicator.innerHTML = `<span class="role-tag warden">Warden</span>`;
+      navLinks.innerHTML = `
+        <li><a href="warden-dashboard.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Overview</span></a></li>
+        <li><a href="complaints.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg><span>All Complaints</span></a></li>
+        <li><a href="community.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Community Issues</span></a></li>
+        <li><a href="maintenance.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Maintenance Work</span></a></li>
+        <li><a href="notices.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Notices</span></a></li>
+        <li><a href="analytics.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><span>Analytics & CSV</span></a></li>
+        <li><a href="emergency-contacts.html" class="nav-item-btn active"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Emergency Contacts</span></a></li>
+      `;
+      profileSnippet.innerHTML = `
+        <div class="user-avatar" style="background-color: var(--color-accent);">W</div>
+        <div class="user-meta">
+          <div class="user-meta-name">${currentUser.name}</div>
+          <div class="user-meta-detail">Chief Warden</div>
+        </div>
+      `;
+      if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+    } else if (currentRole === 'student' && currentUser) {
+      portalSubtitle.textContent = 'Student Portal';
+      document.getElementById('breadcrumb-portal-name').textContent = 'Student';
+      roleIndicator.innerHTML = `<span class="role-tag student">Student</span>`;
+      navLinks.innerHTML = `
+        <li><a href="student-dashboard.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg><span>Dashboard</span></a></li>
+        <li><a href="complaints.html?action=new" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg><span>Report an Issue</span></a></li>
+        <li><a href="complaints.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>My Complaints</span></a></li>
+        <li><a href="community.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Community Issues</span></a></li>
+        <li><a href="maintenance.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Maintenance Work</span></a></li>
+        <li><a href="notices.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><span>Notices & Schedule</span></a></li>
+        <li><a href="emergency-contacts.html" class="nav-item-btn active"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Emergency Contacts</span></a></li>
+      `;
+      profileSnippet.innerHTML = `
+        <div class="user-avatar">S</div>
+        <div class="user-meta">
+          <div class="user-meta-name">${currentUser.name}</div>
+          <div class="user-meta-detail">${currentUser.room}</div>
+        </div>
+      `;
+      if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+    } else {
+      // Public / Unauthenticated visitor
+      portalSubtitle.textContent = 'Emergency Directory';
+      document.getElementById('breadcrumb-portal-name').textContent = 'Public';
+      const topbarAction = document.getElementById('btn-emergency-topbar');
+      if (topbarAction) {
+        topbarAction.href = 'login-selection.html';
+        topbarAction.textContent = 'Portal Login \u2192';
+      }
+      roleIndicator.innerHTML = `<span class="role-tag" style="background: var(--color-bg-subtle); color: var(--color-text-secondary); border: 1px solid var(--color-border);">Public Directory</span>`;
+      navLinks.innerHTML = `
+        <li><a href="login-selection.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span>Portal Selection</span></a></li>
+        <li><a href="student-login.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Student Login</span></a></li>
+        <li><a href="warden-login.html" class="nav-item-btn"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Warden Login</span></a></li>
+        <li><a href="emergency-contacts.html" class="nav-item-btn active"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Emergency Contacts</span></a></li>
+      `;
+      profileSnippet.innerHTML = `
+        <a href="login-selection.html" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">Sign In to Portal \u2192</a>
+      `;
+      if (logoutBtn) logoutBtn.style.display = 'none';
+    }
+
+    const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const sidebar = document.getElementById('app-sidebar');
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', () => sidebar.classList.toggle('mobile-open'));
+    }
+  });
+</script>
+</body>
+</html>
